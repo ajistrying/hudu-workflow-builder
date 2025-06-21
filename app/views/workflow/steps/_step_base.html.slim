@@ -1,0 +1,80 @@
+- step_config = workflow_step_config(step)
+
+.flex.flex-col.mx-auto data-controller="workflow-step" data-workflow-step-step-value=step_config[:step] data-workflow-step-storage-key-value=step_config[:storage_key] data-workflow-step-multi-select-value=step_config[:multi_select]
+  h2.text-lg.mb-4.font-bold= step_config[:title]
+  - if step_config[:subtitle]
+    h4.font-light.mb-4= step_config[:subtitle]
+  
+  - if step_config[:choices].any?
+    .flex.flex-col.gap-4
+      - step_config[:choices].each do |choice|
+        .border.border-gray-300.rounded-lg.p-4.flex.items-center.gap-3.cursor-pointer.hover:bg-gray-50.transition-colors.bg-white data-workflow-step-target="choice" data-action="click->workflow-step#choice" data-choice=choice[:value]
+          .text-2xl= choice[:icon]
+          .text-lg.font-medium= choice[:label]
+      
+      - if step_config[:multi_select]
+        .flex.items-center.gap-2.mt-4 data-action="click->workflow-step#selectAll"
+          input type="checkbox" data-workflow-step-target="selectAllCheckbox" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+          span.cursor-pointer Select all
+
+      - if step_config[:show_add_condition]
+        .flex.justify-end.mt-4
+          = link_to "#", class: "text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2"
+            svg.w-5.h-5 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
+              path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            | Add Condition
+
+  - if step == 'review'
+    .bg-gray-50.rounded-lg.p-6.border.border-gray-200 data-controller="workflow-review"
+      h3.text-lg.font-semibold.text-gray-900.mb-4 Workflow Summary
+      
+      .space-y-4
+        / Trigger
+        .flex.items-start.gap-3
+          .text-sm.text-gray-600.w-20.flex-shrink-0.pt-1 Trigger:
+          div data-workflow-review-target="triggerContent"
+            .flex.items-center.gap-2
+              .text-lg 🔄
+              .text-sm.text-gray-500 Loading...
+
+        / Based On
+        .flex.items-start.gap-3
+          .text-sm.text-gray-600.w-20.flex-shrink-0.pt-1 Based on:
+          div data-workflow-review-target="criteriaOneContent"
+            .flex.items-center.gap-2
+              .text-lg 🔄
+              .text-sm.text-gray-500 Loading...
+
+        / Record Types
+        .flex.items-start.gap-3
+          .text-sm.text-gray-600.w-20.flex-shrink-0.pt-1 Records:
+          div data-workflow-review-target="criteriaTwoContent"
+            .text-sm.text-gray-500 Loading...
+
+        / Action
+        .flex.items-start.gap-3
+          .text-sm.text-gray-600.w-20.flex-shrink-0.pt-1 Action:
+          div data-workflow-review-target="actionContent"
+            .flex.items-center.gap-2
+              .text-lg 🔄
+              .text-sm.text-gray-500 Loading...
+
+  .flex.justify-between.mt-6.w-full
+    - if step_config[:back_path]
+      = link_to step_config[:back_path], class: "text-blue-500 w-fit align-items-center underline", data: { turbo_frame: "workflow_content" }
+        ← Back
+    - else
+      .empty
+    
+    .flex.items-center.gap-2
+      - if step_config[:show_save_later]
+        = link_to "#", class: "text-blue-600 hover:text-blue-700 font-extrabold"
+          | Save and Finish Later
+      
+      - if step_config[:next_path]
+        div data-workflow-step-target="nextButton"
+          = link_to step_config[:next_path], class: "border border-1 border-transparent rounded-md py-2 px-4 bg-blue-700 text-white w-fit align-items-center", data: { turbo_frame: "workflow_content" }
+            = step_config[:next_label] || "Next"
+      - elsif step == 'review'
+        = link_to "#", class: "ml-4 bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md transition-colors"
+          | Save Draft 

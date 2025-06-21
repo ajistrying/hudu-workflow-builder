@@ -1,31 +1,23 @@
 ruby:
     steps = [
-        { name: 'Criteria', completed: true },
-        { name: 'Trigger', completed: false },
-        { name: 'Action', completed: false },
-        { name: 'Review', completed: false }
+        { name: 'Criteria'},
+        { name: 'Trigger'},
+        { name: 'Action'},
+        { name: 'Review'}
     ]
-    current_step = 1
 
-.workflow-progress-tracker.max-w-4xl.mx-auto.py-8.relative data-controller="workflow-progress-tracker"
+.workflow-progress-tracker.max-w-4xl.mx-auto.py-4.relative data-controller="workflow-progress-tracker"
   / Background line that goes through all circles
-  .absolute.bg-gray-300.z-0 style="top: 55px; left: 24px; right: 24px; height: 2px;"
+  .absolute.bg-gray-300.z-0 style="top: 40px; left: 24px; right: 24px; height: 2px;"
   
   / Circles row
   .flex.justify-between.items-center.mb-4.relative.z-10
-    - steps.each_with_index do |step, index|
-      - if step[:completed]
-          .step-circle.w-12.h-12.rounded-full.border-2.flex.items-center.justify-center.bg-green-600.border-green-600.text-white
-              svg.w-10.h-10 fill="currentColor" viewBox="0 0 20 20"
-                path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"
-      - elsif current_step == index
-          .step-circle.w-12.h-12.rounded-full.border-2.flex.items-center.justify-center.bg-white.border-gray-300.text-blue-500
-      - else
-          .step-circle.w-12.h-12.rounded-full.border-2.flex.items-center.justify-center.bg-gray-200.border-gray-300.text-gray-400
+    - steps.each do |step|
+        .step-circle.w-12.h-12.rounded-full.border-2.flex.items-center.justify-center.step-incomplete data-step=step[:name]
   
   / Label row
   .flex.justify-between.items-center
-    - steps.each_with_index do |step, index|
+    - steps.each do |step|
       .flex.flex-col.items-center style="width: 48px;"
         .step-label.text-sm.font-medium.text-center.text-black
           = step[:name]

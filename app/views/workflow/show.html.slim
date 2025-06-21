@@ -1,0 +1,6 @@
+.max-w-3xl.mx-auto.mt-12
+  h1.text-2xl.font-bold New Workflow
+  = render "workflow/workflow_progress_tracker"
+  
+  = turbo_frame_tag "workflow_content" do
+    = render "workflow/steps/#{@step}" 

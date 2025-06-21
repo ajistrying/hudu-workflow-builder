@@ -2,7 +2,13 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import { application } from "./application";
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import WorkflowProgressTrackerController from "./workflow_progress_tracker_controller";
+application.register("workflow-progress-tracker", WorkflowProgressTrackerController);
+
+import WorkflowStepController from "./workflow_step_controller";
+application.register("workflow-step", WorkflowStepController);
+
+import WorkflowReviewController from "./workflow_review_controller";
+application.register("workflow-review", WorkflowReviewController);
