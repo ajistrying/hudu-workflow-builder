@@ -1,6 +1,6 @@
 - step_config = workflow_step_config(step)
 
-.flex.flex-col.mx-auto data-controller="workflow-step" data-workflow-step-step-value=step_config[:step] data-workflow-step-storage-key-value=step_config[:storage_key] data-workflow-step-multi-select-value=step_config[:multi_select]
+.flex.flex-col.mx-auto data-controller="workflow-step" data-workflow-step-step-value=step_config[:step] data-workflow-step-storage-key-value=step_config[:storage_key] data-workflow-step-multi-select-value=step_config[:multi_select] data-action="turbo:frame-load@document->workflow-step#updateProgressTracker"
   h2.text-lg.mb-4.font-bold= step_config[:title]
   - if step_config[:subtitle]
     h4.font-light.mb-4= step_config[:subtitle]
@@ -19,7 +19,7 @@
 
       - if step_config[:show_add_condition]
         .flex.justify-end.mt-4
-          = link_to "#", class: "text-blue-600 hover:text-blue-700 font-medium flex items-center gap-2"
+          button.text-blue-600.hover:text-blue-700.font-medium.flex.items-center.gap-2.hover:cursor-pointer type="button"
             svg.w-5.h-5 viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"
               path d="M12 4V20M4 12H20" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
             | Add Condition
@@ -62,7 +62,7 @@
   .flex.justify-between.mt-6.w-full
     - if step_config[:back_path]
       = link_to step_config[:back_path], class: "text-blue-500 w-fit align-items-center underline", data: { turbo_frame: "workflow_content" }
-        ← Back
+        | ← Back
     - else
       .empty
     

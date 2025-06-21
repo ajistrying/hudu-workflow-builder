@@ -15,6 +15,9 @@ export default class extends Controller {
 		if (this.multiSelectValue) {
 			this.updateSelectAllCheckbox();
 		}
+
+		// Trigger progress tracker update
+		this.updateProgressTracker();
 	}
 
 	choice(event) {
@@ -140,5 +143,14 @@ export default class extends Controller {
 				"pointer-events-none"
 			);
 		}
+	}
+
+	updateProgressTracker() {
+		// Dispatch a custom event that the progress tracker can listen for
+		document.dispatchEvent(
+			new CustomEvent("workflow:step-changed", {
+				detail: { step: this.stepValue },
+			})
+		);
 	}
 }
